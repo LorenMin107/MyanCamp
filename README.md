@@ -17,7 +17,7 @@ Installation:
 3. Install dependencies:
    npm install
 4. Configure MongoDB:
-   Ensure MongoDB is running on your device. Update the MongoDB connection URL in the code if necessary. The default URL is mongodb://localhost:27017/myan-camp.
+   Ensure MongoDB is running on your device. Update the MongoDB connection URL in the code if necessary. The default URL is http://localhost:3000.
 5. Seed the database:
    node seeds/index.js
 6. Seed the admin:

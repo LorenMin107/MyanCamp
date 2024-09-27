@@ -1,0 +1,93 @@
+   <% layout('layouts/boilerplate') %>
+   <h1 class="text-center mt-4"><strong>Admin Dashboard</strong></h1>
+   <div id="admin-dashboard" class="dashboard-container">
+     <div class="cards-container">
+       <div class="card user-card">
+         <div class="card-body">
+           <h2 class="card-total-text">Total Users: <%= totalUsers %></h2>
+    <div class="button-center">
+      <a href="/admin/users" class="btn btn-primary view-users-btn">View Users</a>
+    </div>        </div>
+       </div>
+       <div class="card booking-card">
+         <div class="card-body">
+           <h2 class="card-total-text">Total Bookings: <%= totalBookings %></h2>
+         </div>
+       </div>
+     </div>
+     <div id="sorting-container" class="sorting-container">
+       <select id="sortFieldDropdown" class="form-select small-select">
+         <option value="startDate" <%= sortField === 'startDate' ? 'selected' : '' %>>Sort by Start Date</option>
+         <option value="endDate" <%= sortField === 'endDate' ? 'selected' : '' %>>Sort by End Date</option>
+         <option value="user" <%= sortField === 'user' ? 'selected' : '' %>>Sort by Username</option>
+         <option value="campground" <%= sortField === 'campground' ? 'selected' : '' %>>Sort by Campground Title</option>
+         <option value="totalPrice" <%= sortField === 'totalPrice' ? 'selected' : '' %>>Sort by Total Price</option>
+         <option value="totalDays" <%= sortField === 'totalDays' ? 'selected' : '' %>>Sort by Total Days</option>
+       </select>
+       <select id="sortOrderDropdown" class="form-select small-select">
+         <option value="asc" <%= sortOrder === 1 ? 'selected' : '' %>>Ascending</option>
+         <option value="desc" <%= sortOrder === -1 ? 'selected' : '' %>>Descending</option>
+       </select>
+     </div>
+     <div class="table-responsive">
+       <table class="table table-striped small-text">
+         <thead class="thead-dark">
+           <tr>
+             <th>Booking ID</th>
+             <th>User ID</th>
+             <th>User</th>
+             <th>Phone Number</th>
+             <th>Campground</th>
+             <th>Start Date</th>
+             <th>End Date</th>
+             <th>Total Days</th>
+             <th>Total Price</th>
+             <th>Actions</th>
+           </tr>
+         </thead>
+         <tbody>
+           <% bookings.forEach(booking => { %>
+           <tr>
+             <td><%= booking._id %></td>
+             <td><%= booking.user._id %></td>
+             <td><%= booking.user.username %></td>
+             <td><%= booking.user.phone %></td>
+ <td><%= booking.campground ? booking.campground.title : 'N/A' %></td>             <td><%= booking.startDate ? booking.startDate.toLocaleDateString() : 'Not available' %></td>
+             <td><%= booking.endDate ? booking.endDate.toLocaleDateString() : 'Not available' %></td>
+             <td><%= booking.totalDays %></td>
+             <td>$<%= booking.totalPrice ? booking.totalPrice.toFixed(2) : 'N/A' %></td>
+             <td>
+               <div class="button-container">
+                 <a href="/bookings/<%= booking._id %>/transaction" class="btn btn-info btn-sm small-btn">View Transaction</a>
+                 <form action="/admin/bookings/<%= booking._id %>?_method=DELETE" method="POST" style="display: inline">
+                   <button type="submit" class="btn btn-danger uniform-btn small-btn">Cancel Booking</button>
+                 </form>
+               </div>
+             </td>
+           </tr>
+           <% }) %>
+         </tbody>
+       </table>
+     </div>
+     <div class="pagination-container">
+       <% if (page > 1) { %>
+       <a href="/admin/dashboard?page=<%= page - 1 %>&sortField=<%= sortField %>&sortOrder=<%= sortOrder %>" class="btn btn-primary small-btn">Previous</a>
+       <% } %>
+       <% if (page < totalPages) { %>
+       <a href="/admin/dashboard?page=<%= page + 1 %>&sortField=<%= sortField %>&sortOrder=<%= sortOrder %>" class="btn btn-primary small-btn">Next</a>
+       <% } %>
+     </div>
+   </div>
+   <script>
+     document.getElementById('sortFieldDropdown').addEventListener('change', function() {
+       const sortField = this.value;
+       const sortOrder = document.getElementById('sortOrderDropdown').value;
+       window.location.href = `/admin/dashboard?sortField=${sortField}&sortOrder=${sortOrder}`;
+     });
+
+     document.getElementById('sortOrderDropdown').addEventListener('change', function() {
+       const sortField = document.getElementById('sortFieldDropdown').value;
+       const sortOrder = this.value;
+       window.location.href = `/admin/dashboard?sortField=${sortField}&sortOrder=${sortOrder}`;
+     });
+   </script>

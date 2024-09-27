@@ -1,0 +1,43 @@
+.footer {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  padding: 20px 0;
+}
+
+.footer h5 {
+  color: #343a40;
+  margin-bottom: 15px;
+}
+
+.footer p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.footer ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.footer ul li a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footer ul li a:hover {
+  text-decoration: underline;
+}
+
+.social-icon {
+  font-size: 24px;
+  color: #343a40;
+  margin-right: 10px;
+}
+
+.social-icon:hover {
+  color: #007bff;
+}
+
+.text-muted {
+  color: #6c757d;
+}

@@ -1,0 +1,39 @@
+<% layout("layouts/boilerplate") %>
+<div class="view-bookings-container">
+  <h1 class="view-bookings-title"><%= user.username%>'s Bookings</h1>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Booking ID</th>
+          <th>Campground</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Total Days</th>
+          <th>Total Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% bookings.forEach(booking => { %>
+        <tr>
+          <td><%= booking._id %></td>
+          <td><%= booking.campground.title %></td>
+          <td><%= booking.startDate ? booking.startDate.toLocaleDateString() : 'Not available' %></td>
+          <td><%= booking.endDate ? booking.endDate.toLocaleDateString() : 'Not available' %></td>
+          <td><%= booking.totalDays %></td>
+          <td>$<%= booking.totalPrice.toFixed(2) %></td>
+          <td>
+            <a
+              href="/bookings/<%= booking._id %>/transaction"
+              class="btn btn-info btn-sm"
+              >View Transaction</a
+            >
+            <!-- Add View Transaction link -->
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

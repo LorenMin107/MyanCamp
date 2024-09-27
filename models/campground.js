@@ -1,0 +1,75 @@
+const mongoose = require("mongoose");
+const Review = require("./review");
+const Booking = require("./booking");
+const Schema = mongoose.Schema;
+
+const ImageSchema = new Schema({
+  url: String,
+  filename: String,
+});
+
+ImageSchema.virtual("thumbnail").get(function () {
+  return this.url.replace("/upload", "/upload/w_200");
+});
+
+const opts = { toJSON: { virtuals: true } }; // to include virtuals when calling toJSON on the model
+
+const CampgroundSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    images: [ImageSchema],
+    geometry: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
+    price: Number,
+    description: String,
+    location: String,
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
+    bookings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+      },
+    ],
+  },
+  opts
+);
+
+CampgroundSchema.virtual("properties.popUpMarkup").get(function () {
+  return `<strong><a href="/campgrounds/${this._id}">${this.title}</a></strong>
+  <p></p>${this.description.substring(0, 20)}...</p>`;
+});
+
+CampgroundSchema.post("findOneAndDelete", async function (doc) {
+  if (doc) {
+    await Review.deleteMany({
+      _id: { $in: doc.reviews },
+    });
+    await Booking.deleteMany({
+      campground: doc._id,
+    });
+  }
+});
+
+module.exports = mongoose.model("Campground", CampgroundSchema);

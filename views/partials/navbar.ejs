@@ -1,0 +1,116 @@
+<link
+  rel="stylesheet"
+  href="/stylesheets/styles.css"
+/>
+<nav
+  id="navbar"
+  class="navbar fixed-top navbar-expand-lg bg-light navbar-light"
+>
+  <div class="container-fluid">
+    <a
+      class="navbar-brand"
+      href="/"
+      >MyanCamp</a
+    >
+
+    <form
+      class="d-flex"
+      action="/campgrounds/search"
+      method="GET"
+    >
+      <input
+        class="form-control me-2"
+        type="search"
+        name="search"
+        placeholder="Search campgrounds"
+        id="searchInput"
+      />
+      <button
+        class="btn btn-outline-light"
+        type="submit"
+        id="searchButton"
+        disabled
+      >
+        Search
+      </button>
+    </form>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse"
+      id="navbarNavAltMarkup"
+    >
+      <div class="navbar-nav">
+        <a
+          class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'home' ? 'active' : '' %>"
+          href="/"
+          >Home</a
+        >
+        <a
+          class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'campgrounds' ? 'active' : '' %>"
+          href="/campgrounds"
+          >Campgrounds</a
+        >
+        <% if (currentUser && currentUser.isAdmin) { %>
+        <a
+          class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'newCampground' ? 'active' : '' %>"
+          href="/campgrounds/new"
+          >New Campground</a
+        >
+        <% } %> <% if (currentUser && currentUser.isAdmin) { %>
+        <a
+          class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'adminDashboard' ? 'active' : '' %>"
+          href="/admin/dashboard"
+          >Manage Bookings</a
+        >
+        <% } %><% if (currentUser && currentUser.bookingsCount && currentUser.bookingsCount > 0) { %>
+        <a
+          class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'bookings' ? 'active' : '' %>"
+          href="/bookings/view"
+          >View Bookings</a
+        >
+        <% } %> <% if (!currentUser || !currentUser.isAdmin) { %>
+        <a
+          class="nav-link <%= typeof currentPage !== 'undefined' && currentPage === 'contact' ? 'active' : '' %>"
+          href="/contact"
+          >Contact Us</a
+        >
+        <% } %>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <% if(!currentUser) {%>
+        <a
+          class="nav-link"
+          href="/login"
+          >Login</a
+        ><a
+          class="nav-link"
+          href="/register"
+          >Register</a
+        >
+        <% } else { %>
+        <a
+          class="nav-link"
+          href="/logout"
+          >Logout</a
+        >
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+  document.getElementById("searchInput").addEventListener("input", function () {
+    const searchButton = document.getElementById("searchButton");
+    searchButton.disabled = !this.value.trim(); // Enable button only if input is not empty
+  });
+</script>

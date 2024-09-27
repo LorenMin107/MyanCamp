@@ -1,0 +1,88 @@
+<% layout('layouts/boilerplate')%>
+<div class="container d-flex justify-content-center align-items-center mt-5 register-container">
+  <div class="row">
+    <div class="col-md-6">
+      <img
+        src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
+        alt=""
+        class="img-fluid register-img"
+      />
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow register-card">
+        <div class="card-body">
+          <h5 class="card-title">Register</h5>
+          <form
+            action="/register"
+            method="POST"
+            class="validated-form"
+            novalidate
+          >
+            <div class="mb-3">
+              <label
+                class="form-label"
+                for="username"
+                >Username</label
+              >
+              <input
+                class="form-control"
+                type="text"
+                id="username"
+                name="username"
+                required
+                autofocus
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+              <label
+                class="form-label"
+                for="email"
+                >Email</label
+              >
+              <input
+                class="form-control"
+                type="email"
+                id="email"
+                name="email"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+              <label
+                class="form-label"
+                for="phone"
+                >Phone Number</label
+              >
+              <input
+                class="form-control"
+                type="tel"
+                id="phone"
+                name="phone"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+              <label
+                class="form-label"
+                for="password"
+                >Password</label
+              >
+              <input
+                class="form-control"
+                type="password"
+                id="password"
+                name="password"
+                required
+              />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+            <button class="btn btn-success d-block w-100">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

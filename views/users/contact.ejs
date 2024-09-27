@@ -1,0 +1,35 @@
+<% layout('layouts/boilerplate') %>
+<div class="contact-page">
+  <div class="contact-container">
+    <h1>Contact Us</h1>
+    <% if (currentUser) { %>
+    <form
+      action="/contact"
+      method="POST"
+    >
+      <div class="mb-3">
+        <label
+          for="message"
+          class="form-label"
+          >Message</label
+        >
+        <textarea
+          class="form-control"
+          id="message"
+          name="message"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+      >
+        Submit
+      </button>
+    </form>
+    <% } else { %>
+    <p>You need to <a href="/login">login</a> to contact us.</p>
+    <% } %>
+  </div>
+</div>

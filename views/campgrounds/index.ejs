@@ -1,0 +1,103 @@
+<% layout("layouts/boilerplate") %>
+<div id="clusterMap"></div>
+<h1 class="text-center mt-4 mb-4"><strong> All Campgrounds</strong></h1>
+<div class="container mt-4 d-flex justify-content-end">
+  <select id="locationDropdown" class="form-select mb-4" <% if(searchPerformed){%> disabled<% } %>>
+    <option value="">All Locations</option>
+    <% locations.forEach(location => { %>
+    <option value="<%= location %>"><%= location %></option>
+    <% }) %>
+  </select>
+</div>
+<div id="campgroundList">
+  <% for (let campground of campgrounds) { %>
+  <div class="card mb-3">
+    <div class="row">
+      <div class="col-md-4">
+        <% if(campground.images.length) {%>
+
+        <img
+          class="img-fluid"
+          alt=""
+          src="<%= campground.images[0].url %>"
+        />
+        <% } else{ %>
+        <img
+          class="img-fluid"
+          alt=""
+          src="https://res.cloudinary.com/dlvtzyb7j/image/upload/v1717518203/YelpCamp/mui73s0hcn3zaum0hjwa.jpg"
+        />
+        <% } %>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%= campground.title %></h5>
+          <p class="card-text"><%= campground.description %></p>
+          <p class="card-text">
+            <small class="text-muted"><%=campground.location %></small>
+          </p>
+          <a
+            class="btn btn-secondary"
+            href="/campgrounds/<%=campground._id %>"
+            >View <%= campground.title %></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+<% if (currentUser && !currentUser.isAdmin) { %>
+  <script
+    src="https://static.elfsight.com/platform/platform.js"
+    data-use-service-core
+    defer
+  ></script>
+  <div class="elfsight-app-3cf90625-d1ae-44e9-93fe-e36a1db181d4" data-elfsight-app-lazy></div>
+<% } %>
+
+<script>
+    const mapToken = "<%- process.env.MAPBOX_TOKEN %>";
+      const campgroundsData = <%- JSON.stringify(campgrounds) %>; // Declare and assign campgroundsData here
+
+      const campgrounds = {
+        type: "FeatureCollection",
+        features: campgroundsData.map(campground => ({ // convert campgrounds to GeoJSON format for map markers
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: campground.geometry.coordinates,
+          },
+          properties: { // properties to show in the pop-up when a marker is clicked on the map
+            id: campground._id,
+            title: campground.title,
+            location: campground.location,
+  popUpMarkup: `<h3>${campground.title}</h3><p>${campground.location}</p><a href="/campgrounds/${campground._id}" class="btn btn-primary">View</a>`,        },
+        })) %>
+      };
+</script>
+<script src="/javascripts/clusterMap.js"></script>
+<script>
+  function setupDropdownAndMap() {
+    document.getElementById("locationDropdown").addEventListener("change", function () {
+      const selectedLocation = this.value.toLowerCase();
+      const cards = document.querySelectorAll("#campgroundList .card");
+      cards.forEach((card) => {
+        const location = card.querySelector(".text-muted").textContent.toLowerCase();
+        card.style.display = selectedLocation === "" || location.includes(selectedLocation) ? "" : "none";
+      });
+
+      // Update map markers
+      const features = campgrounds.features.filter((feature) => {
+        return selectedLocation === "" || feature.properties.location.toLowerCase().includes(selectedLocation);
+      });
+      map.getSource("campgrounds").setData({ type: "FeatureCollection", features });
+    });
+  }
+
+  // Call on initial load
+  setupDropdownAndMap();
+
+  // Also call setupDropdownAndMap after search results are loaded
+  // This should be triggered in the part of your code that handles updating the content after search
+</script>

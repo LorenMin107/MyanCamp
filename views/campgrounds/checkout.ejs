@@ -1,0 +1,55 @@
+<% layout("layouts/boilerplate") %>
+<div class="checkout-container">
+  <h1>Checkout</h1>
+  <div class="checkout-content">
+    <img
+      src="<%= campground.images[0].url %>"
+      alt="Campground Image"
+      class="img-fluid checkout-image"
+    />
+    <div class="checkout-details">
+      <p>Campground: <span><%= campground.title %></span></p>
+      <p>Location: <span><%= campground.location %></span></p>
+      <p>Days: <span><%= daysCount %></span></p>
+      <p>Total Price: <span>$<%= parseFloat(totalPrice).toFixed(2) %></span></p>
+    </div>
+  </div>
+  <div class="button-group">
+    <a
+      href="/campgrounds/<%= campground._id %>"
+      class="btn btn-primary back-btn"
+      >Back to Campground</a
+    >
+    <form
+      action="/bookings/<%= campground._id %>/pay"
+      method="GET"
+    >
+      <input
+        type="hidden"
+        name="startDate"
+        value="<%= startDate %>"
+      />
+      <input
+        type="hidden"
+        name="endDate"
+        value="<%= endDate %>"
+      />
+      <input
+        type="hidden"
+        name="totalDays"
+        value="<%= daysCount %>"
+      />
+      <input
+        type="hidden"
+        name="totalPrice"
+        value="<%= totalPrice %>"
+      />
+      <button
+        type="submit"
+        class="btn btn-success btn-lg proceed-btn"
+      >
+        Proceed
+      </button>
+    </form>
+  </div>
+</div>

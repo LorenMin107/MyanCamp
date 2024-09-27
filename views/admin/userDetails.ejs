@@ -1,0 +1,37 @@
+<% layout('layouts/boilerplate') %>
+<div class="container mt-5 user-details-container">
+  <h1 class="text-center"><strong>User Details</strong></h1>
+  <div class="card mt-4">
+    <div class="card-body">
+      <h2 class="card-title">Username: <%= user.username %></h2>
+      <h3 class="card-subtitle mb-2 text-muted">Email: <%= user.email %></h3>
+      <h3 class="card-subtitle mb-2 text-muted">Phone: <%= user.phone %></h3>
+      <h3 class="mt-4">Bookings:</h3>
+      <% if (user.bookings && user.bookings.length > 0) { %>
+      <ul class="list-group">
+        <% user.bookings.forEach(booking => { %>
+        <li class="list-group-item">
+          <strong>Campground:</strong> <%= booking.campground ? booking.campground.title : 'N/A' %><br />
+          <strong>Start Date:</strong> <%= new Date(booking.startDate).toLocaleDateString() %><br />
+          <strong>End Date:</strong> <%= new Date(booking.endDate).toLocaleDateString() %>
+        </li>
+        <% }) %>
+      </ul>
+      <% } else { %>
+      <p class="text-muted">No bookings available.</p>
+      <% } %>
+      <h3 class="mt-4">Reviews:</h3>
+      <ul class="list-group">
+        <% user.reviews.forEach(review => { %>
+        <li class="list-group-item">Review ID: <%= review._id %>, Rating: <%= review.rating %>, Body: <%= review.body %></li>
+        <% }) %>
+      </ul>
+      <h3 class="mt-4">Contacts:</h3>
+      <ul class="list-group">
+        <% user.contacts.forEach(contact => { %>
+        <li class="list-group-item">Contact ID: <%= contact._id %>, Message: <%= contact.message %></li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+</div>

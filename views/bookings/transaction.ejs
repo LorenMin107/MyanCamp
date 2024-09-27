@@ -1,0 +1,56 @@
+<% layout("layouts/boilerplate") %>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header">
+          <h1>Transaction Details</h1>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 mb-3 mb-md-0">
+              <% if (campground.images && campground.images.length > 0) { %>
+              <img
+                src="<%= campground.images[0].url %>"
+                alt="Campground Image"
+                class="img-fluid"
+              />
+              <% } else { %>
+              <img
+                src="https://via.placeholder.com/150"
+                alt="Placeholder Image"
+                class="img-fluid"
+              />
+              <% } %>
+            </div>
+            <div class="col-md-8">
+              <p>Thank you for your payment, <%= username %>!</p>
+              <p><strong>Booking ID:</strong> <%= booking._id %></p>
+              <p><strong>Campground:</strong> <%= campground.title %></p>
+              <p><strong>Start Date:</strong> <%= new Date(booking.startDate).toLocaleDateString() %></p>
+              <p><strong>End Date:</strong> <%= new Date(booking.endDate).toLocaleDateString() %></p>
+              <p><strong>Total Days:</strong> <%= booking.totalDays %></p>
+              <p><strong>Total Price:</strong> $<%= booking.totalPrice.toFixed(2) %></p>
+              <p><strong>Transaction ID:</strong> <%= session.id %></p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <% if (user.isAdmin) { %>
+          <a
+            href="/admin/dashboard"
+            class="btn btn-primary"
+            >Back to Dashboard</a
+          >
+          <% } else { %>
+          <a
+            href="/bookings/view"
+            class="btn btn-primary"
+            >Back to Bookings</a
+          >
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
